@@ -52,9 +52,9 @@ class ReaderExtension < Radiant::Extension
       end
     end
     
-    admin.tabs.add "Readers", "/admin/readers", :after => "Layouts", :visibility => [:all]
-    admin.tabs['Readers'].add_link('readers', '/admin/readers')
-    admin.tabs['Readers'].add_link('messages', '/admin/readers/messages')
+    admin.tabs.add "Clients", "/admin/readers", :after => "Layouts", :visibility => [:all]
+    admin.tabs['Clients'].add_link('clients', '/admin/readers')
+    admin.tabs['Clients'].add_link('messages', '/admin/readers/messages')
     
     ActionView::Base.field_error_proc = Proc.new do |html_tag, instance_tag| 
       "<span class='field_error'>#{html_tag}</span>" 
@@ -62,6 +62,6 @@ class ReaderExtension < Radiant::Extension
   end
   
   def deactivate
-    admin.tabs.remove "Readers"
+    admin.tabs.remove "Clients"
   end
 end
