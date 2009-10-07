@@ -1,7 +1,7 @@
 require_dependency 'application_controller'
 
 class ReaderExtension < Radiant::Extension
-  version "0.1"
+  version "0.8"
   description "Centralises reader/member/user registration and management tasks for the benefit of other extensions"
   url "http://spanner.org/radiant/reader"
   
@@ -16,6 +16,8 @@ class ReaderExtension < Radiant::Extension
     end
 
     map.resources :readers, :member => {:activate => :any, :resend_activation => :any}
+    map.resources :messages, :only => [:index, :show], :member => [:preview]
+
     map.resource :reader_session
     map.resource :password_reset
     map.repassword '/password_reset/:id/:confirmation_code', :controller => 'password_resets', :action => 'edit'
