@@ -7,6 +7,7 @@ describe ReadersController do
     controller.stub!(:request).and_return(request)
     Page.current_site = sites(:test) if defined? Site
     request.env["HTTP_REFERER"] = 'http://test.host/referer!'
+    Radiant::Config['reader.allow_registration?'] = true
   end
     
   describe "with a get to new" do
@@ -214,6 +215,19 @@ describe ReadersController do
         response.should render_template("edit")
       end
 
+    end
+  end
+  
+  describe "when registration is not allowed" do
+    before do
+      Radiant::Config['reader.allow_registration?'] = false
+    end
+    
+    it "should not offer the registration form" do
+      get :new
+      response.should be_redirect
+      response.should redirect_to reader_login_url
+      flash[:error].should_not be_nil
     end
   end
 end
