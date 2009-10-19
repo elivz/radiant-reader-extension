@@ -30,7 +30,7 @@ class ReaderExtension < Radiant::Extension
   extension_config do |config|
     config.gem 'authlogic'
     config.gem 'gravtastic'
-    config.gem 'rgrove-sanitize', :lib => 'sanitize'
+    config.gem 'sanitize', :lib => 'sanitize'
     config.extension 'share_layouts'
     config.extension 'submenu'
   end
@@ -55,9 +55,9 @@ class ReaderExtension < Radiant::Extension
       end
     end
     
-    admin.tabs.add "Readers", "/admin/readers", :after => "Layouts", :visibility => [:all]
-    admin.tabs['Readers'].add_link('readers', '/admin/readers')
-    admin.tabs['Readers'].add_link('messages', '/admin/readers/messages')
+    admin.tabs.add "Clients", "/admin/readers", :after => "Layouts", :visibility => [:all]
+    admin.tabs['Clients'].add_link('readers', '/admin/readers')
+    admin.tabs['Clients'].add_link('messages', '/admin/readers/messages')
     
     ActionView::Base.field_error_proc = Proc.new do |html_tag, instance_tag| 
       "<span class='field_error'>#{html_tag}</span>" 
