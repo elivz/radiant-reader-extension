@@ -1,9 +1,9 @@
-%h1 Remove Reader
+%h1 Remove a Client
 
 %p 
   Are you sure you want to 
   %strong.warning permanently remove
-  the following reader?
+  the following client?
 
 %table.index#readers{:cellpadding=>0, :cellspacing=>0, :border=>0}
   %tbody
@@ -13,6 +13,6 @@
 
 - form_for [:admin, @reader], :html => { :method => :delete } do
   %p.buttons
-    %input.button{:type=>"submit", :value=>"Delete Reader"}/
+    %input.button{:type=>"submit", :value=>"Delete Client"}/
     or
     = link_to 'Cancel', admin_readers_path

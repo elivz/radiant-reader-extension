@@ -56,7 +56,7 @@ class ReaderExtension < Radiant::Extension
     end
     
     admin.tabs.add "Clients", "/admin/readers", :after => "Layouts", :visibility => [:all]
-    admin.tabs['Clients'].add_link('readers', '/admin/readers')
+    admin.tabs['Clients'].add_link('clients', '/admin/readers')
     admin.tabs['Clients'].add_link('messages', '/admin/readers/messages')
     
     ActionView::Base.field_error_proc = Proc.new do |html_tag, instance_tag| 

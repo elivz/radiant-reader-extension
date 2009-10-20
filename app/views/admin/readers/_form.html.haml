@@ -51,7 +51,7 @@
       - form.edit_description do
         %tr
           %th.label
-            = f.label :description, "Readers description", :class => 'optional'
+            = f.label :description, "Contact Name", :class => 'optional'
           %td.field
             ~ f.text_area "description", :size => '40x4', :class => "textarea" 
           %td.help
@@ -64,11 +64,11 @@
             %span.checkbox
               = f.check_box "trusted"
           %td.help
-            True by default. Uncheck to limit a reader's actions on the site.
+            True by default. Uncheck to limit a client's actions on the site.
       - form.edit_notes do
         %tr
           %th.label
-            = f.label :notes, "Admin notes", :class => 'optional'
+            = f.label :notes, "Other notes", :class => 'optional'
           %td.field
             ~ f.text_area "notes", :size => '40x4', :class => "textarea" 
           %td.help
