@@ -21,4 +21,4 @@
         - if message.function.blank?
           = link_to(image('remove', :alt => 'Remove message'), admin_message_url(message), :method => :delete, :confirm => "really delete message #{message.subject}?") 
         - else
-          = image('noremove')
+          = image('remove-disabled')
