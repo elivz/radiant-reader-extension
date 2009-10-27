@@ -1,7 +1,10 @@
-module MessageTags
+module ReaderTags
   include Radiant::Taggable
   
   class TagError < StandardError; end
+
+
+  # I can see this causing problems: will change soon
 
   desc %{
     The root 'site' tag is not meant to be called directly. 
@@ -42,7 +45,7 @@ module MessageTags
     tag.expand
   end
   
-  [:name, :email, :description, :login].each do |field|
+  [:name, :forename, :email, :description, :login].each do |field|
     desc %{
       Only for use in email messages. Displays the #{field} field of the reader currently being emailed.
       <pre><code><r:recipient:#{field} /></code></pre>
@@ -174,8 +177,6 @@ module MessageTags
 
 
 
-
-
   desc %{
     The root 'reader' tag is not meant to be called directly.
     All it does is summon a reader object so that its fields can be displayed with eg.
@@ -184,8 +185,17 @@ module MessageTags
     This will only work on an access-protected page and should never be used on a cached page, because everyone will see it.
   }
   tag 'reader' do |tag|
-    tag.locals.reader = current_reader
-    tag.expand if tag.locals.messages.any?
+    tag.expand if tag.locals.reader = Reader.current
+  end
+
+  [:name, :forename, :email, :description, :login].each do |field|
+    desc %{
+      Displays the #{field} field of the current reader.
+      <pre><code><r:reader:#{field} /></code></pre>
+    }
+    tag "reader:#{field}" do |tag|
+      tag.locals.reader.send(field)
+    end
   end
 
   desc %{
@@ -223,5 +233,37 @@ module MessageTags
     end
     result
   end
+  
+  desc %{
+    Displays the standard block of controls: greeting, links to preferences, etc.
+    
+    <pre><code><r:reader:controls /></code></pre>
+  }
+  tag "reader:controls" do |tag|
+    results = %{You are logged in as #{tag.render('reader:name')}. Not you? Please <a href="#{reader_logout_path}">log out</a>. }
+    links = [%{<a href="#{edit_reader_path(tag.locals.reader)}">preferences</a>}]
+    links << %{<a href="#{reader_path(tag.locals.reader)}">your page</a>}
+    links << %{<a href="/admin">site admin</a>} if tag.locals.reader.is_user?
+    results + links.join(%{<span class="separator"> | </span>})
+  end
+  
+  desc %{
+    Expands only if there is a reader and we are on an uncached page.
+    
+    <pre><code><r:if_reader><div id="controls"><r:reader:controls /></r:if_reader></code></pre>
+  }
+  tag "if_reader" do |tag|
+    tag.expand if Reader.current && !tag.locals.page.cache?
+  end
+  
+  desc %{
+    Expands only if there is no reader or we are not on an uncached page.
+    
+    <pre><code><r:unless_reader>Please log in</r:unless_reader></code></pre>
+  }
+  tag "unless_reader" do |tag|
+    tag.expand unless Reader.current && !tag.locals.page.cache?
+  end
+  
 
 end
