@@ -10,9 +10,15 @@ The purpose of this extension is to provide a common core that supports other vi
 
 ## Latest
 
-SQLite compatibility fixes thanks to [elivz](http://github.com/elivz)
+* Other extensions can extend the reader registration/preferences form with `ReaderController.add_form_partial('this/_partial')`
 
-Brought into line with the latest version of our [multi_site](http://github.com/spanner/radiant-multi_site-extension): should now work seamlessly with or without sites. Also now makes use of the [submenu](https://github.com/spanner/radiant-submenu-extension/tree) and I've tweaked the routing so as to allow other extensions to work within the /admin/readers/ space.
+* Lots of little bugfixes thanks to radixhound
+
+* By default we don't cache reader-facing pages.
+
+* SQLite compatibility fixes thanks to [elivz](http://github.com/elivz)
+
+* Brought into line with the latest version of our [multi_site](http://github.com/spanner/radiant-multi_site-extension): should now work seamlessly with or without sites. Also now makes use of the [submenu](https://github.com/spanner/radiant-submenu-extension/tree) and I've tweaked the routing so as to allow other extensions to work within the /admin/readers/ space.
 
 ## Status
 
@@ -24,8 +30,7 @@ Tests are reasonably thorough. A lot of our code relies on this extension.
 
 Radiant 0.8.1 (we need the new config machinery), [share_layouts](http://github.com/spanner/radiant-share-layouts-extension) (currently you need our version, which works with mailers too) and the [submenu](https://github.com/spanner/radiant-submenu-extension/tree) extension for the admin interface.
 
-
-You also need three gems: authlogic, gravtastic and sanitize. They are declared in the extension so you should be able just to run
+You also need four gems: authlogic, gravtastic, will_paginate and sanitize. They're declared in the extension so you should be able just to run
 
 	sudo rake gems:install
 
@@ -33,7 +38,7 @@ Sanitize uses nokogiri, which needs libxml2 and libxslt: you may need to go off 
 
 	gem 'authlogic'
 
-in your environment.rb: it has to load before anything calls `require ApplicationController`, and most radiant extensions will do that.
+in your environment.rb: it has to load before anything else calls `require ApplicationController`, and most radiant extensions will do that.
 
 ## Installation
 
@@ -45,26 +50,19 @@ The update task will install a /stylesheets/admin/reader.css that you can leave 
 
 ## Configuration
 
-Under multi_site Reader adds a few administrative columns to the site table: 
+Under multi_site Reader adds a `reader_layout` column to the site table and a layout-chooser to the site-edit view.
 
-* reader_layout determines the layout used to present reader pages and defaults to 'Main' or the first layout it finds in that site.
-* `mail_from_name` and `mail_from_address` determine from whom and where the administrative email sent to readers appear to come. They default to the name and email address of the owner of the site.
+In a single-site installation you will need these configuration lines:
 
-There are corresponding Radiant::Config entries for single-site installations:
-
-* reader.layout
-* site.title
+* reader.layout (should be the name of a radiant layout)
+* site.name
 * site.url
-* site.mail_from_name
-* site.mail_from_address
-	
-These are mostly used in email, but they are required.
 
 ## Layouts
 
 We use the share_layouts extension to wrap the layout of your public site around the pages produced by the reader extension. You can designate any layout as the 'reader layout': in a single-site installation put the name of the layout in a `reader.layout` config entry. In a multi-site installation you'll find a 'reader layout' dropdown on the 'edit site' page. Choose the one you want to use for each site.
 
-The layout of the layout is up to you: from our point of view all it has to do is call `<r:content />` at some point. Ideally it will call `<r:content part="title" />` too. There is also a `breadcrumbs` part if that's required. In many cases you can just use your existing site layout and the various forms and pages will drop into its usual compartments.
+The layout of the layout is up to you: from our point of view all it has to do is call `<r:content />` at some point. Ideally it will call `<r:content part="pagetitle" />` too. There is also a `breadcrumbs` part if that's required. In many cases you can just use your existing site layout and the various forms and pages will drop into its usual compartments.
 
 ## Using readers in other extensions
 
@@ -72,7 +70,7 @@ The reader admin pages are properly registered with the AdminUI as collections o
 
 Most of your reader-facing controllers will want to inherit from `ReaderActionController`.
 
-Marking a reader as untrusted does nothing here apart from making them go red, but we assume that in other extensions that will have some limiting effect.
+Marking a reader as untrusted does nothing here apart from making them go red, but we assume that in other extensions it will have some limiting effect.
 
 ## See also
 
@@ -83,7 +81,7 @@ Marking a reader as untrusted does nothing here apart from making them go red, b
 
 ## Bugs and comments
 
-In [lighthouse](http://spanner.lighthouseapp.com/projects/26912-radiant-extensions), please, or for little things an email or github message is fine.
+[Github issues](http://github.com/spanner/radiant-reader-extension/issues), please, or for little things an email or github message is fine.
 
 ## Author and copyright
 

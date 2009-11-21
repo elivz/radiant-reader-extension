@@ -1,6 +1,9 @@
 class ReadersController < ReaderActionController
+  @@extended_form_partials = []
+  cattr_accessor :extended_form_partials
   
   before_filter :check_registration_allowed, :only => [:new, :create]
+  before_filter :initialize_form_partials, :only => [:new, :edit, :update, :create]
   before_filter :require_reader, :except => [:index, :new, :create, :activate]
   before_filter :i_am_me, :only => [:show]
   before_filter :restrict_to_self, :only => [:edit, :update, :resend_activation]
@@ -54,7 +57,7 @@ class ReadersController < ReaderActionController
       @reader.save!
       @reader.send_activation_message
       self.current_reader = @reader
-      redirect_to reader_activation_url(@reader.id)
+      redirect_to reader_activation_url
     else
       render :action => 'new'
     end
@@ -105,5 +108,14 @@ protected
       false
     end
   end
-         
+  
+  def self.add_form_partial(path)
+    extended_form_partials.push(path)
+  end
+
+private
+  def initialize_form_partials
+    @form_partials = extended_form_partials
+  end
+
 end
