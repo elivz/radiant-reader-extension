@@ -22,6 +22,8 @@ class Reader < ActiveRecord::Base
 
   has_many :message_readers
   has_many :messages, :through => :message_readers
+  has_many :download_folders
+  has_many :downloads
 
   attr_accessor :current_password   # used for authentication on update
 
