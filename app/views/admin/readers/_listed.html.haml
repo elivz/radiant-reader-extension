@@ -13,6 +13,10 @@
     - tbody.description_cell do
       %td.reader_description
         = truncate_and_textilize(reader.description, 24)
+
+    - tbody.downloads_cell do
+      %td.reader_downloads
+        = link_to('View Downloads', admin_downloads_url(:reader => reader.id))
       
     - tbody.modify_cell do
       %td.remove
