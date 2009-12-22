@@ -29,7 +29,7 @@ class Reader < ActiveRecord::Base
   attr_accessor :current_password   # used for authentication on update
 
   before_save :set_login
-  before_update :update_user
+  # before_update :update_user
 
   validates_presence_of :name, :email, :message => 'is required'
   validates_uniqueness_of :login, :message => "is already in use here"
