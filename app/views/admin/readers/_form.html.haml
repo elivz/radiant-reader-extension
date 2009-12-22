@@ -57,13 +57,13 @@
       - form.edit_description do
         %tr
           %th.label
-            = f.label :description, "Contact Name", :class => 'optional'
+            = f.label :description, "Contact Info", :class => 'optional'
           %td.field
             ~ f.text_area "description", :size => '40x4', :class => "textarea" 
           %td.help
             Optional.
       - form.edit_status do
-        %tr
+        %tr{:style => 'display:none'}
           %th.label
             = f.label :trusted, 'Trusted?'
           %td.field{:style=>"text-align: left;"}
@@ -74,11 +74,15 @@
       - form.edit_notes do
         %tr
           %th.label
-            = f.label :notes, "Other notes", :class => 'optional'
-          %td.field
-            ~ f.text_area "notes", :size => '40x4', :class => "textarea" 
+            = f.label :notes, "Notes"
+          %td.field{:style=>"text-align: left;"}
+            %ul
+              - @reader.notes.each do |note|
+                %li= link_to note.title, admin_note_url(note)
+            %p
+              = link_to 'Add a new note', new_admin_note_url(:reader_id => @reader.id)
           %td.help
-            Optional.
+            Keep track of interactions with this client.
 
   - render_region :form_bottom do |form_bottom|
     - form_bottom.edit_timestamp do

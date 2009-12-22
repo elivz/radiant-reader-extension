@@ -1,0 +1,25 @@
+.form-area
+  = render_region :form_top
+
+- form_for [:admin, @note] do |f|
+  = hidden_field 'note', 'reader_id'
+  - render_region :form do |form|
+    - form.edit_title do
+      %p.title
+        = f.label :title
+        = f.text_field 'title', :maxlength => 100, :class => "textbox"
+ 
+    - form.edit_note do
+      %p.note
+        = f.label :note, "Note"
+        = f.text_area 'note', :size => '40x6', :style => 'width: 100%; height: 120px;', :class => "textarea"
+  
+  - render_region :form_bottom do |form_bottom|
+    - form_bottom.edit_timestamp do
+      = updated_stamp @note  
+    - form_bottom.edit_buttons do
+      %p.buttons
+        = save_model_button @note
+        = save_model_and_continue_editing_button @note
+        or
+        = link_to "Cancel", admin_readers_url

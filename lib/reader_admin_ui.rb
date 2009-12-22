@@ -3,14 +3,16 @@ module ReaderAdminUI
  def self.included(base)
    base.class_eval do
 
-      attr_accessor :reader, :message
+      attr_accessor :reader, :message, :note
       alias_method :readers, :reader
       alias_method :messages, :message
+      alias_method :notes, :note
 
       def load_default_regions_with_reader
         load_default_regions_without_reader
         @reader = load_default_reader_regions
         @message = load_default_message_regions
+        @note = load_default_note_regions
       end
       alias_method_chain :load_default_regions, :reader
 
@@ -54,6 +56,24 @@ module ReaderAdminUI
           message.new = message.edit
         end
       end
+
+      def load_default_note_regions
+        returning OpenStruct.new do |note|
+          note.edit = Radiant::AdminUI::RegionSet.new do |edit|
+            edit.main.concat %w{edit_header edit_form}
+            edit.form.concat %w{edit_title edit_note}
+            edit.form_bottom.concat %w{edit_timestamp edit_buttons}
+          end
+          note.index = Radiant::AdminUI::RegionSet.new do |index|
+            index.thead.concat %w{title_header description_header downloads_header modify_header}
+            index.tbody.concat %w{title_cell description_cell downloads_cell modify_cell}
+            index.bottom.concat %w{new_button}
+          end
+          note.remove = note.index
+          note.new = note.edit
+        end
+      end
+      
     end
   end
 end

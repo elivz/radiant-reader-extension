@@ -13,6 +13,7 @@ class ReaderExtension < Radiant::Extension
 
     map.namespace :admin, :path_prefix => 'admin/readers' do |admin|
       admin.resources :messages, :member => [:preview, :deliver]
+      admin.resources :notes
     end
 
     map.resources :readers
@@ -53,6 +54,7 @@ class ReaderExtension < Radiant::Extension
       Radiant::AdminUI.send :include, ReaderAdminUI
       admin.reader = Radiant::AdminUI.load_default_reader_regions
       admin.message = Radiant::AdminUI.load_default_message_regions
+      admin.note = Radiant::AdminUI.load_default_note_regions
       if defined? admin.sites
         admin.sites.edit.add :form, "admin/sites/choose_reader_layout", :after => "edit_homepage"
       end
