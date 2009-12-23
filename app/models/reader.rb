@@ -50,7 +50,7 @@ class Reader < ActiveRecord::Base
   def activate!
     self.activated_at = Time.now.utc
     self.save!
-    self.send_welcome_message
+    # self.send_welcome_message
   end
 
   def activated?
@@ -65,18 +65,18 @@ class Reader < ActiveRecord::Base
     inactive? && !new_record?
   end
 
-  [:activation, :invitation, :welcome, :password_reset].each do |function|
-    define_method("send_#{function}_message".intern) {
-      send_functional_message(function)
-    }
-  end
-
-  def send_functional_message(function)
-    reset_perishable_token!
-    message = Message.functional(function)
-    raise StandardError, "No #{function} message could be found" unless message
-    message.deliver_to(self)
-  end
+#   [:activation, :invitation, :welcome, :password_reset].each do |function|
+#     define_method("send_#{function}_message".intern) {
+#       send_functional_message(function)
+#     }
+#   end
+# 
+#   def send_functional_message(function)
+#     reset_perishable_token!
+#     message = Message.functional(function)
+#     raise StandardError, "No #{function} message could be found" unless message
+#     message.deliver_to(self)
+#   end
 
   def generate_email_field_name
     generate_password(32)
