@@ -29,6 +29,7 @@ class Reader < ActiveRecord::Base
   attr_accessor :current_password   # used for authentication on update
 
   before_save :set_login
+  after_save :activate!
   # before_update :update_user
 
   validates_presence_of :name, :email, :message => 'is required'
@@ -48,9 +49,11 @@ class Reader < ActiveRecord::Base
   end
 
   def activate!
-    self.activated_at = Time.now.utc
-    self.save!
-    # self.send_welcome_message
+    unless self.activated?
+      self.activated_at = Time.now.utc
+      self.save!
+      # self.send_welcome_message
+    end
   end
 
   def activated?

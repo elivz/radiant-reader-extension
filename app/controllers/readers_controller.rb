@@ -53,7 +53,6 @@ class ReadersController < ReaderActionController
     @reader.email = params[@email_field.intern]
     if (@reader.valid?)
       @reader.save!
-      @reader.activate!
       self.current_reader = @reader
       redirect_to reader_activation_url
     else
@@ -64,7 +63,6 @@ class ReadersController < ReaderActionController
   def update
     @reader.attributes = params[:reader]
     @reader.clear_password = params[:reader][:password] if params[:reader][:password]
-    @reader.activate! unless @reader.active?
     if @reader.save
       flash[:notice] = "Your account has been updated"
       redirect_to url_for(@reader)
