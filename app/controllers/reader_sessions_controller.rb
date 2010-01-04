@@ -6,6 +6,7 @@ class ReaderSessionsController < ReaderActionController
   
   def new
     @reader_session = ReaderSession.new
+    @title = 'Log In'
   end
   
   def create
