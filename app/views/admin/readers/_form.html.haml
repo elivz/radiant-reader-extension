@@ -76,13 +76,15 @@
           %th.label
             = f.label :notes, "Notes"
           %td.field{:style=>"text-align: left;"}
-            %ul
+            %ul.notes_list
               - @reader.notes.each do |note|
-                %li= link_to note.title, admin_note_url(note)
+                %li
+                  = link_to note.title, edit_admin_note_url(note)
+                  %span= note.created_at.localtime.strftime("%D")
             %p
-              = link_to 'Add a new note', new_admin_note_url(:reader_id => @reader.id)
+              = link_to image('add-note', :alt => 'Add Note'), new_admin_note_url(:reader_id => @reader.id)
           %td.help
-            Keep track of interactions with this client.
+            Keep track of your interactions with this client.
 
   - render_region :form_bottom do |form_bottom|
     - form_bottom.edit_timestamp do

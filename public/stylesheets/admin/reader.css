@@ -44,13 +44,24 @@
 }
 
 #content table.index p.admin_notes {
-  color: #c00;
-  margin: 0 0 0 40px;
+  color: #666;
+  font-size: 90%;
 }
 
-#content table.index p.admin_notes {
-  color: #c00;
-  margin: 0 0 0 40px;
+#content table.index p.admin_notes a {
+  color: #666;
+  font-weight: normal;
+  text-decoration: underline;
+}
+
+.notes_list {
+  list-style-type: none;
+  padding-left: 0;
+}
+.notes_list li span {
+  padding-left: 0.5em;
+  font-size: 90%;
+  color: #666;
 }
 
 p.haserror {
